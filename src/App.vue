@@ -56,13 +56,21 @@
         </v-navigation-drawer>
 
         <v-main>
-          <v-container fluid class="grey lighten-4 fill-height">
-            <v-row justify="center" align="center">
+          <v-container fluid class="grey lighten-4">
+            <v-row justify="center" align="top">
               <v-col class="shrink">
                 <router />
               </v-col>
             </v-row>
           </v-container>
+
+          <v-container fluid class="grey lighten-4 fill-height">
+            <v-row justify="center" align="top">
+              <v-col >
+                <messages />
+              </v-col>
+            </v-row>
+          </v-container>          
         </v-main>
       </v-app>
     </v-app>
@@ -71,10 +79,12 @@
 
 <script>
 import router from "./components/routers";
+import messages from "./components/messages"
 
 export default {
   components: {
     router,
+    messages,
   },
   props: {
     source: String,
