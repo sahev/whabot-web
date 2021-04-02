@@ -59,7 +59,7 @@
           <v-container fluid class="grey lighten-4">
             <v-row justify="center" >
               <v-col class="shrink">
-                <router />
+                <bots />
               </v-col>
             </v-row>
           </v-container>
@@ -78,12 +78,12 @@
 </template>
 
 <script>
-import router from "./components/routers";
+import bots from "./components/bots";
 import messages from "./components/messages"
 
 export default {
   components: {
-    router,
+    bots,
     messages,
   },
   props: {

@@ -1,12 +1,14 @@
 <template>
-  <div>
-    routers
-  </div>
+<v-container>
+  <v-btn>
+    new bot
+  </v-btn>
+  </v-container>
 </template>
 
 <script>
 export default {
-  name: 'routers',
+  name: 'bots',
   props: {
   }
 }
