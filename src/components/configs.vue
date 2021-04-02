@@ -18,7 +18,7 @@
           <v-btn icon dark @click="dialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Settings</v-toolbar-title>
+          <v-toolbar-title>Configurações</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn dark text @click="dialog = false">
@@ -29,7 +29,8 @@
 
         <v-card>
           <v-card-title>
-            Auto-respostas 
+            Auto-respostas
+
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -41,62 +42,163 @@
           </v-card-title>
           <v-data-table
             :headers="headers"
-            :items="words.find(word => word.bot === this.botid)"
+            :items="getWordsByBot()"
             :search="search"
-          ></v-data-table>
+          >
+            
+            
+            <template v-slot:[`item.actions`]="{ item }">
+              <v-icon small class="mr-2" @click="editItem(item)">
+                mdi-pencil
+              </v-icon>
+              <v-icon small @click="deleteItem(item)">
+                mdi-delete
+              </v-icon>
+            </template>
+
+
+            <template v-slot:[`item.status`]="{ item }">
+                          <v-switch
+              color="orange"
+              hide-details
+              :input-value="item.status"
+            ></v-switch>
+            </template>
+            
+          </v-data-table>
         </v-card>
 
         <v-divider></v-divider>
+    
+    
+    <!-- NOVOS ITEMS -->
+
+      </v-card>
+    </v-dialog>
+    <v-dialog persistent v-model="editmess" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">teste</span>
+        </v-card-title>
+
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="8" md="12">
+                <v-text-field label="Palavras-chave"
+                :value="editform.length ? editform[0].word : false"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12" sm="6" md="12">
+                <v-textarea
+                  outlined
+                  name="input-7-4"
+                  label="Resposta"
+                  :value="editform.length ? editform[0].res : false"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="close()">
+            Cancel
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="save()">
+            Save
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
 </template>
 <script>
 export default {
+  components: {},
   props: {
-    botid: Number
+    botid: Number,
   },
-  created() {
-    const w = this.words.find(word => word.bot === this.botid)
-    this.data = w
-    console.log(this.data);
-  },
+  created() {},
   methods: {
-    getWordsByBot(word) {
-      return word.bot === this.botid;
-    }
+    log(data) {
+      console.log("log: ", data);
+    },
+    getWordsByBot() {
+      const a = [];
+      for (let i = 0; i < this.words.length; i++) {
+        if (this.words[i].bot === this.botid) a.push(this.words[i]);
+      }
+      return a;
+    },
+    editItem(item) {
+      this.editmess = true;
+      this.editform.push(item)
+
+      console.log("edit: ", item);
+    },
+    deleteItem(item) {
+      this.close();
+      console.log("delete: ", item);
+    },
+    close() {
+      this.editmess = false;
+      this.editform = []
+    },
+    save() {
+      this.close();
+    },
   },
   data() {
     return {
       dialog: false,
-      data: [],
+      editmess: false,
+      editform: [],
       words: [
         {
           bot: 1,
           title: "Apresentação cardápio",
           word: "cardápio",
-          res: "o cardápio de hoje é: 123",
+          res: "o cardápio de hoje é: 123o cardápio de hoje é: 123o cardápio de hoje3s",
+          status: 1
         },
-        { bot: 1, title: "Boas vindas", word: "bom dia", res: "bom dia nomecliente" },
+        {
+          bot: 1,
+          title: "Boas vindas",
+          word: "bom dia",
+          res: "bom dia nomecliente",
+          status: 0
+        },
         {
           bot: 1,
           title: "Finalização do pedido",
           word: "finalizar",
           res: "Total: X items: y pagamento: z",
+          status: 1
         },
         {
           bot: 2,
           title: "Pedido",
           word: "meu pedido",
           res: "Seu pedido é: xyz",
+          status: 1
         },
-        { bot: 2, title: "Finalização", word: "tchau", res: "Até mais cliente x!" },
+        {
+          bot: 2,
+          title: "Finalização",
+          word: "tchau",
+          res: "Até mais cliente x!",
+          status: 0
+        },
         {
           bot: 3,
           title: "Produtos",
           word: "produtos",
           res: "produtos disponíveis são: xyz",
-        },        
+          status: 1
+        },
       ],
       search: "",
       headers: [
@@ -106,8 +208,9 @@ export default {
           value: "word",
         },
         { text: "Resposta", value: "res" },
+        { text: "Ação", value: "actions", sortable: false },
+        { text: "Status", value: "status", sortable: false },
       ],
-
     };
   },
 };
