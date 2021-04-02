@@ -73,7 +73,7 @@
     <v-dialog persistent v-model="editmess" max-width="500px">
       <v-card>
         <v-card-title>
-          <span class="headline">teste</span>
+          <span class="headline">{{ editform.length ? editform[0].title : false }}</span>
         </v-card-title>
 
         <v-card-text>

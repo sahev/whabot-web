@@ -10,17 +10,12 @@
           <v-expansion-panel-header
             ><b> {{ bot.name }}</b>
 
-            <div disabled="disabled" class="col-lg-10" style="text-align: right; ">
-              Ativo:
-            </div>
-
-            <!-- <v-layout justify-space-between>
-              <v-input :success-messages="['Ativo: ']" disabled> </v-input>
-            </v-layout> -->
-
             <v-layout justify-end>
-              <!-- <h1>teste </h1> -->
-              <v-switch color="blue" :input-value="bot.enabled"></v-switch>
+              <v-switch color="blue" :input-value="bot.enabled">
+                <template v-slot:label>
+                  {{ bot.enabled ? "Ativo" : "Inativo" }}
+                </template>
+              </v-switch>
             </v-layout>
           </v-expansion-panel-header>
 
@@ -30,9 +25,6 @@
 
           <v-expansion-panel-content>
             <configs :botid="bot.id" />
-            <!-- <div class="col-lg-12" style="text-align: left; ">
-            <v-switch color="orange" :input-value="bot.enabled"></v-switch>
-          </div> -->
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -54,7 +46,12 @@ export default {
     return {
       config: false,
       bots: [
-        { id: 1, name: "Bot 1", desc: "Pizzaria pedidos", enabled: 1 },
+        {
+          id: 1,
+          name: "Bot dasdasdassd",
+          desc: "Pizzaria pedidos",
+          enabled: 1,
+        },
         { id: 2, name: "Bot 2", desc: "Restaurante cardápios", enabled: 0 },
         { id: 3, name: "Bot 3", desc: "Ecommerce dúvidas", enabled: 0 },
       ],
