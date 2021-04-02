@@ -8,21 +8,22 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <div class="col-lg-12" style="text-align: right;">
-          <v-btn fab dark small color="green">
-            <v-icon v-bind="attrs" v-on="on">mdi-pencil</v-icon>
+          <v-btn fab dark small color="blue"  >
+            <v-icon v-bind="attrs" v-on="on" @click="log(attrs)">mdi-pencil</v-icon>
           </v-btn>
         </div>
       </template>
+
       <v-card>
-        <v-toolbar dark color="primary">
+        <v-toolbar dark color="green">
           <v-btn icon dark @click="dialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Configurações</v-toolbar-title>
+
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn dark text @click="dialog = false">
-              Save
+              Voltar
             </v-btn>
           </v-toolbar-items>
         </v-toolbar>
@@ -45,8 +46,6 @@
             :items="getWordsByBot()"
             :search="search"
           >
-            
-            
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon small class="mr-2" @click="editItem(item)">
                 mdi-pencil
@@ -56,23 +55,19 @@
               </v-icon>
             </template>
 
-
             <template v-slot:[`item.status`]="{ item }">
-                          <v-switch
-              color="orange"
-              hide-details
-              :input-value="item.status"
-            ></v-switch>
+              <v-switch
+                color="blue"
+                hide-details
+                :input-value="item.enabled"
+              ></v-switch>
             </template>
-            
           </v-data-table>
         </v-card>
 
         <v-divider></v-divider>
-    
-    
-    <!-- NOVOS ITEMS -->
 
+        <!-- NOVOS ITEMS -->
       </v-card>
     </v-dialog>
     <v-dialog persistent v-model="editmess" max-width="500px">
@@ -85,8 +80,9 @@
           <v-container>
             <v-row>
               <v-col cols="12" sm="8" md="12">
-                <v-text-field label="Palavras-chave"
-                :value="editform.length ? editform[0].word : false"
+                <v-text-field
+                  label="Palavras-chave"
+                  :value="editform.length ? editform[0].word : false"
                 ></v-text-field>
               </v-col>
 
@@ -135,7 +131,7 @@ export default {
     },
     editItem(item) {
       this.editmess = true;
-      this.editform.push(item)
+      this.editform.push(item);
 
       console.log("edit: ", item);
     },
@@ -145,7 +141,7 @@ export default {
     },
     close() {
       this.editmess = false;
-      this.editform = []
+      this.editform = [];
     },
     save() {
       this.close();
@@ -161,43 +157,44 @@ export default {
           bot: 1,
           title: "Apresentação cardápio",
           word: "cardápio",
-          res: "o cardápio de hoje é: 123o cardápio de hoje é: 123o cardápio de hoje3s",
-          status: 1
+          res:
+            "o cardápio de hoje é: 123o cardápio de hoje é: 123o cardápio de hoje3s",
+          enabled: 1,
         },
         {
           bot: 1,
           title: "Boas vindas",
           word: "bom dia",
           res: "bom dia nomecliente",
-          status: 0
+          enabled: 0,
         },
         {
           bot: 1,
           title: "Finalização do pedido",
           word: "finalizar",
           res: "Total: X items: y pagamento: z",
-          status: 1
+          enabled: 1,
         },
         {
           bot: 2,
           title: "Pedido",
           word: "meu pedido",
           res: "Seu pedido é: xyz",
-          status: 1
+          enabled: 1,
         },
         {
           bot: 2,
           title: "Finalização",
           word: "tchau",
           res: "Até mais cliente x!",
-          status: 0
+          enabled: 0,
         },
         {
           bot: 3,
           title: "Produtos",
           word: "produtos",
           res: "produtos disponíveis são: xyz",
-          status: 1
+          enabled: 1,
         },
       ],
       search: "",

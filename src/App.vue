@@ -2,7 +2,7 @@
   <div id="app">
     <v-app id="inspire">
       <v-app id="keep">
-        <v-app-bar app clipped-left color="amber">
+        <v-app-bar app clipped-left color="green">
           <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
           <span class="title ml-3 mr-5"
             >Whabot&nbsp;<span class="font-weight-light">Messages</span></span
@@ -26,7 +26,7 @@
         >
           <v-list dense class="grey lighten-4">
             <template v-for="(item, i) in items">
-              <v-row v-if="item.heading" :key="i" align="center">
+              <v-row v-if="item.heading" :key="i" >
                 <v-col cols="6">
                   <v-subheader v-if="item.heading">
                     {{ item.heading }}
@@ -57,7 +57,7 @@
 
         <v-main>
           <v-container fluid class="grey lighten-4">
-            <v-row justify="center" align="top">
+            <v-row justify="center" >
               <v-col class="shrink">
                 <router />
               </v-col>
@@ -65,7 +65,7 @@
           </v-container>
 
           <v-container fluid class="grey lighten-4 fill-height">
-            <v-row justify="center" align="top">
+            <v-row justify="center">
               <v-col >
                 <messages />
               </v-col>
@@ -87,7 +87,6 @@ export default {
     messages,
   },
   props: {
-    source: String,
   },
   data() {
     return {

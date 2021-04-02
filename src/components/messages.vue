@@ -7,23 +7,40 @@
           :key="b"
           :class="bot.enabled ? 'enabled' : 'disabled'"
         >
-          <v-expansion-panel-header>{{ bot.name }}</v-expansion-panel-header>
+          <v-expansion-panel-header
+            ><b> {{ bot.name }}</b>
+
+            <div disabled="disabled" class="col-lg-10" style="text-align: right; ">
+              Ativo:
+            </div>
+
+            <!-- <v-layout justify-space-between>
+              <v-input :success-messages="['Ativo: ']" disabled> </v-input>
+            </v-layout> -->
+
+            <v-layout justify-end>
+              <!-- <h1>teste </h1> -->
+              <v-switch color="blue" :input-value="bot.enabled"></v-switch>
+            </v-layout>
+          </v-expansion-panel-header>
+
           <v-expansion-panel-content>
             {{ bot.desc }}
           </v-expansion-panel-content>
-          <v-expansion-panel-content>
 
-              <configs :botid="bot.id" />
-            
+          <v-expansion-panel-content>
+            <configs :botid="bot.id" />
+            <!-- <div class="col-lg-12" style="text-align: left; ">
+            <v-switch color="orange" :input-value="bot.enabled"></v-switch>
+          </div> -->
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
     </v-row>
-    
   </v-card>
 </template>
 <script>
-import configs from "./configs"
+import configs from "./configs";
 
 export default {
   name: "messages",
@@ -31,7 +48,7 @@ export default {
     msg: String,
   },
   components: {
-    configs
+    configs,
   },
   data() {
     return {

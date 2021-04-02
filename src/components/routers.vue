@@ -8,7 +8,6 @@
 export default {
   name: 'routers',
   props: {
-    msg: String
   }
 }
 </script>
