@@ -7,17 +7,23 @@
           :key="b"
           :class="bot.enabled ? 'enabled' : 'disabled'"
         >
-          <v-expansion-panel-header
-            ><b> {{ bot.name }}</b>
-
-            <v-layout justify-end>
-              <v-switch color="blue" :input-value="bot.enabled">
-                <template v-slot:label>
-                  {{ bot.enabled ? "Ativo" : "Inativo" }}
-                </template>
-              </v-switch>
-            </v-layout>
-          </v-expansion-panel-header>
+          <v-row>
+            <v-expansion-panel-header>
+              <b> {{ bot.name }}</b>
+              <v-layout justify-end>
+                <v-switch
+                  @click.stop=""
+                  color="blue"
+                  v-model="bot.enabled"
+                  @change="setBotStatus(bot.id, bot.enabled)"
+                >
+                  <template v-slot:label>
+                    {{ bot.enabled ? "Ativo" : "Inativo" }}
+                  </template>
+                </v-switch>
+              </v-layout>
+            </v-expansion-panel-header>
+          </v-row>
 
           <v-expansion-panel-content>
             {{ bot.desc }}
@@ -42,10 +48,21 @@ export default {
   components: {
     configs,
   },
+  created() {
+    this.getBots();
+  },
   data() {
     return {
       config: false,
-      bots: [
+      bots: [],
+    };
+  },
+  methods: {
+    setBotStatus(i, status) {
+      console.log(i, status);
+    },
+    getBots() {
+      this.bots = [
         {
           id: 1,
           name: "Bot dasdasdassd",
@@ -54,8 +71,8 @@ export default {
         },
         { id: 2, name: "Bot 2", desc: "Restaurante cardápios", enabled: 0 },
         { id: 3, name: "Bot 3", desc: "Ecommerce dúvidas", enabled: 0 },
-      ],
-    };
+      ];
+    },
   },
 };
 </script>
@@ -70,5 +87,19 @@ export default {
   border-left-style: solid;
   border-left-width: 7px;
   border-left-color: #e41818;
+}
+
+.v-expansion-panel-header:before {
+  background-color: none;
+  border-radius: none;
+  bottom: none;
+  content: none;
+  left: none;
+  opacity: none;
+  pointer-events: none;
+  position: none;
+  right: none;
+  top: none;
+  transition: none;
 }
 </style>

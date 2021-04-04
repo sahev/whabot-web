@@ -11,7 +11,7 @@
       </v-card-title>
       <v-card-text>
         <v-container>
-          <v-form>
+          <v-form lazy-validation>
             <v-row>
               <v-col cols="12" sm="12">
                 <v-text-field
@@ -63,10 +63,10 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="dialog = false">
-          Close
+          Voltar
         </v-btn>
         <v-btn color="blue darken-1" text @click="save">
-          Save
+          Salvar
         </v-btn>
       </v-card-actions>
     </v-card>
