@@ -26,7 +26,7 @@
         >
           <v-list dense class="grey lighten-4">
             <template v-for="(item, i) in items">
-              <v-row v-if="item.heading" :key="i" >
+              <v-row v-if="item.heading" :key="i">
                 <v-col cols="6">
                   <v-subheader v-if="item.heading">
                     {{ item.heading }}
@@ -41,8 +41,12 @@
               ></v-divider>
               <v-list-item v-else :key="i" link>
                 <v-list-item-action>
-                  <v-icon v-if="item.text === 'Online'" color="green">{{ item.icon }}</v-icon>
-                  <v-icon v-else-if="item.text === 'Offline'" color="red">{{ item.icon }}</v-icon>
+                  <v-icon v-if="item.text === 'Online'" color="green">{{
+                    item.icon
+                  }}</v-icon>
+                  <v-icon v-else-if="item.text === 'Offline'" color="red">{{
+                    item.icon
+                  }}</v-icon>
                   <v-icon>{{ item.icon }}</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
@@ -55,22 +59,29 @@
           </v-list>
         </v-navigation-drawer>
 
-        <v-main>
-          <v-container fluid class="grey lighten-4">
-            <v-row justify="center" >
-              <v-col class="shrink">
-                <bots />
-              </v-col>
-            </v-row>
-          </v-container>
+        <v-main class="grey lighten-4 ">
+          <v-col sm="12"> </v-col>
 
-          <v-container fluid class="grey lighten-4 fill-height">
-            <v-row justify="center">
-              <v-col >
-                <messages />
-              </v-col>
-            </v-row>
-          </v-container>          
+          <v-col sm="12">
+            <v-container fluid>
+              <v-row justify="center">
+                <v-col>
+                  <messages />
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-col>
+
+          <v-col sm="12">
+            <v-container fluid>
+              <v-row justify="center">
+                <v-col class="shrink">
+                  <bots />
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-col>
+
         </v-main>
       </v-app>
     </v-app>
@@ -79,15 +90,14 @@
 
 <script>
 import bots from "./components/bots";
-import messages from "./components/messages"
+import messages from "./components/messages";
 
 export default {
   components: {
     bots,
     messages,
   },
-  props: {
-  },
+  props: {},
   data() {
     return {
       drawer: null,
