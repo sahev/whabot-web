@@ -102,12 +102,13 @@ export default {
     return {
       drawer: null,
       items: [
-        { heading: "Status" },
-        { icon: "mdi-robot", text: "Online", color: "green" },
-        { icon: "mdi-robot-off", text: "Offline", color: "red" },
+        { heading: "Início" },
+        { icon: "mdi-home", text: "Homepage" },
+        { icon: "mdi-robot", text: "Robôs" },
         { divider: true },
         { heading: "Mensagens" },
-        { icon: "mdi-plus", text: "Criar nova resposta" },
+        { icon: "mdi-frequently-asked-questions", text: "FAQ's", page: "faq" },
+        { icon: "mdi-sitemap", text: "Workflow's", page: "workflow" },
         { divider: true },
         { icon: "mdi-cog", text: "Configurações" },
         { icon: "mdi-help-circle", text: "Ajuda" },
