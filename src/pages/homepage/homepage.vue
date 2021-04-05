@@ -39,18 +39,12 @@
                 dark
                 class="my-4"
               ></v-divider>
-              <v-list-item v-else :key="i" link>
+              <v-list-item v-else :key="i" link :to="item.page">
                 <v-list-item-action>
-                  <v-icon v-if="item.text === 'Online'" color="green">{{
-                    item.icon
-                  }}</v-icon>
-                  <v-icon v-else-if="item.text === 'Offline'" color="red">{{
-                    item.icon
-                  }}</v-icon>
                   <v-icon>{{ item.icon }}</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
-                  <v-list-item-title class="grey--text">
+                  <v-list-item-title class="grey--text" >
                     {{ item.text }}
                   </v-list-item-title>
                 </v-list-item-content>
@@ -60,9 +54,20 @@
         </v-navigation-drawer>
 
         <v-main class="grey lighten-4 ">
-          <v-col sm="12"> </v-col>
 
-          <v-col sm="12">
+          <v-col sm="12"></v-col>
+
+          <!-- <v-col sm="12">
+            <v-container fluid>
+              <v-row justify="center">
+                <v-col>
+                  <h2>HOMEPAGE</h2>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-col> -->
+
+          <!-- <v-col sm="12">
             <v-container fluid>
               <v-row justify="center">
                 <v-col>
@@ -80,7 +85,7 @@
                 </v-col>
               </v-row>
             </v-container>
-          </v-col>
+          </v-col> -->
 
         </v-main>
       </v-app>
@@ -89,14 +94,14 @@
 </template>
 
 <script>
-import Newbot from "../bots/new-bot";
-import Bots from "../bots/bots";
+// import newbot from "../bots/new-bot";
+// import bots from "../bots/bots";
 
 export default {
-  name: "Homepage",
+  name: "homepage",
   components: {
-    Newbot,
-    Bots,
+    // newbot,
+    // bots,
   },
   props: {},
   data() {
@@ -104,8 +109,8 @@ export default {
       drawer: null,
       items: [
         { heading: "Início" },
-        { icon: "mdi-home", text: "Homepage" },
-        { icon: "mdi-robot", text: "Robôs" },
+        { icon: "mdi-home", text: "Homepage", page: "/" },
+        { icon: "mdi-robot", text: "Robôs", page: "bots" },
         { divider: true },
         { heading: "Mensagens" },
         { icon: "mdi-frequently-asked-questions", text: "FAQ's", page: "faq" },
@@ -116,6 +121,11 @@ export default {
       ],
     };
   },
+  methods: {
+    redirect(i) {
+      this.$router.push(i);
+    }
+  }
 };
 </script>
 
