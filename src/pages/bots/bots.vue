@@ -42,7 +42,7 @@ import configs from "../../components/configs";
 import axios from "axios"
 
 export default {
-  name: "bots",
+  name: "Bots",
   props: {
     msg: String,
   },
