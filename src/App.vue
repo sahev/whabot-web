@@ -66,7 +66,7 @@
             <v-container fluid>
               <v-row justify="center">
                 <v-col>
-                  <messages />
+                  <bots />
                 </v-col>
               </v-row>
             </v-container>
@@ -76,7 +76,7 @@
             <v-container fluid>
               <v-row justify="center">
                 <v-col class="shrink">
-                  <bots />
+                  <newbot />
                 </v-col>
               </v-row>
             </v-container>
@@ -89,13 +89,13 @@
 </template>
 
 <script>
-import bots from "./components/bots";
-import messages from "./components/messages";
+import newbot from "./pages/bots/new-bot";
+import bots from "./pages/bots/bots";
 
 export default {
   components: {
+    newbot,
     bots,
-    messages,
   },
   props: {},
   data() {

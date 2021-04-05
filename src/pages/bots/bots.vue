@@ -5,20 +5,20 @@
         <v-expansion-panel
           v-for="(bot, b) in bots"
           :key="b"
-          :class="bot.enabled ? 'enabled' : 'disabled'"
+          :class="bot.bot_enabled ? 'enabled' : 'disabled'"
         >
           <v-row>
             <v-expansion-panel-header>
-              <b> {{ bot.name }}</b>
+              <b> {{ bot.bot_name }}</b>
               <v-layout justify-end>
                 <v-switch
                   @click.stop=""
                   color="blue"
-                  v-model="bot.enabled"
-                  @change="setBotStatus(bot.id, bot.enabled)"
+                  v-model="bot.bot_enabled"
+                  @change="setBotStatus(bot.bot_name, bot.bot_enabled)"
                 >
                   <template v-slot:label>
-                    {{ bot.enabled ? "Ativo" : "Inativo" }}
+                    {{ bot.bot_enabled ? "Ativo" : "Inativo" }}
                   </template>
                 </v-switch>
               </v-layout>
@@ -26,11 +26,11 @@
           </v-row>
 
           <v-expansion-panel-content>
-            {{ bot.desc }}
+            {{ bot.bot_description }}
           </v-expansion-panel-content>
 
           <v-expansion-panel-content>
-            <configs :botid="bot.id" />
+            <configs :botid="bot.bot_id" />
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -38,18 +38,19 @@
   </v-card>
 </template>
 <script>
-import configs from "./configs";
+import configs from "../../components/configs";
+import axios from "axios"
 
 export default {
-  name: "messages",
+  name: "bots",
   props: {
     msg: String,
   },
   components: {
     configs,
   },
-  created() {
-    this.getBots();
+  async created() {
+    await this.getBots();
   },
   data() {
     return {
@@ -58,20 +59,15 @@ export default {
     };
   },
   methods: {
-    setBotStatus(i, status) {
-      console.log(i, status);
+    async setBotStatus(bot_name, bot_enabled) {
+      await axios.patch(`bots/${bot_name}`, { bot_name, bot_enabled })
     },
-    getBots() {
-      this.bots = [
-        {
-          id: 1,
-          name: "Bot dasdasdassd",
-          desc: "Pizzaria pedidos",
-          enabled: 1,
-        },
-        { id: 2, name: "Bot 2", desc: "Restaurante cardápios", enabled: 0 },
-        { id: 3, name: "Bot 3", desc: "Ecommerce dúvidas", enabled: 0 },
-      ];
+    async getBots() {
+      let res = await axios.get('/bots', {
+        params: { bot_user: 1 },
+      })
+      
+      this.bots = res.data
     },
   },
 };

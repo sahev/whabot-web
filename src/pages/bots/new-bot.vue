@@ -16,7 +16,7 @@
               <v-col cols="12" sm="12">
                 <v-text-field
                   label="Nome*"
-                  v-model="dataBot.name"
+                  v-model="dataBot.bot_name"
                   required
                 ></v-text-field>
               </v-col>
@@ -26,7 +26,7 @@
                 <v-textarea
                   outlined
                   label="Descrição"
-                  v-model="dataBot.desc"
+                  v-model="dataBot.bot_description"
                   required
                 ></v-textarea>
               </v-col>
@@ -47,14 +47,14 @@
                 <v-select
                   :items="models"
                   label="Modelo de respostas*"
-                  v-model="dataBot.models"
+                  v-model="dataBot.bot_model"
                   :disabled="disableDropdown"
                   required
                 ></v-select>
               </v-col>
             </v-row>
             <v-col cols="12" sm="6">
-              <v-switch label="Iniciar o robô?" v-model="dataBot.enabled"></v-switch>
+              <v-switch label="Iniciar o robô?" v-model="dataBot.bot_enabled"></v-switch>
             </v-col>
           </v-form>
         </v-container>
@@ -74,8 +74,10 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: "bots",
+  name: "newbot",
   props: {},
   data() {
     return {
@@ -91,15 +93,7 @@ export default {
       ],
       type: [],
       models: [],
-      dataBot: [
-        {
-          name: String,
-          desc: String,
-          type: String,
-          models: String,
-          enabled: Boolean,
-        },
-      ],
+      dataBot: {},
     };
   },
   methods: {
@@ -113,11 +107,12 @@ export default {
 
       modelsdata.map((model) => this.models.push(model.name));
     },
-    save() {
+    async save() {
       this.dialog = false;
-      this.dataBot.type = this.type;
+      this.dataBot.bot_type = this.type;
+      this.dataBot.bot_user = "1";
 
-      console.log(this.dataBot);
+      await axios.post('bots/', this.dataBot).then(res => console.log("res api: ", res.data))
     },
   },
 };
