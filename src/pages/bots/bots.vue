@@ -3,7 +3,7 @@
     <v-expansion-panel
       v-for="(bot, b) in bots"
       :key="b"
-      :class="!bot.bot_enabled ? 'inactive' : bot.bot_status == 'IsLogged' ? 'enabled' : bot.bot_status == 'chatsAvailable' ? 'enabled' : 'disabled'"
+      :class="!bot.bot_enabled ? 'inactive' : bot.bot_status == 'isLogged' ? 'enabled' : bot.bot_status == 'chatsAvailable' ? 'enabled' : 'disabled'"
     >
       <v-expansion-panel-header v-slot="{ open }" @click="img = false" >
         <v-row no-gutters>
@@ -12,31 +12,39 @@
           </v-col>
           <v-col cols="8" class="text--secondary">
             <v-fade-transition leave-absolute>
-              <span v-if="open && bot.bot_status != 'IsLogged' && bot.bot_status != 'chatsAvailable' ">{{ bot.bot_enabled ? '' : 'Robô desativado'}}
-                <v-btn small @click="botInit(bot)" @click.stop="">Iniciar sessão</v-btn>
-                <v-img v-if="bot.bot_enabled && bot.bot_status != 'online' && img" class="qrcode" :src="qrcode"> </v-img>
+              <span v-if="open && bot.bot_status != 'isLogged' && bot.bot_status != 'chatsAvailable' ">{{ bot.bot_enabled ? '' : 'Robô desativado'}}
+                
+                <!-- <v-btn small @click="botInit(bot)" @click.stop="">Iniciar sessão</v-btn>
+                <v-img v-if="bot.bot_enabled && bot.bot_status != 'online' && img" class="qrcode" :src="qrcode"> </v-img> -->
               </span>
               
               <v-row v-else no-gutters style="width: 100%">
                 <v-col cols="6">
-                  <span>{{ !bot.bot_enabled ? 'Desativado' : bot.bot_status == "IsLogged" ? "Conectado" : bot.bot_status == "chatsAvailable" ? "Conectado" : "Desconectado"}}</span>
+                  <span>{{ !bot.bot_enabled ? 'Desativado' : bot.bot_status == "isLogged" ? "Conectado" : bot.bot_status == "chatsAvailable" ? "Conectado" : "Desconectado"}}</span>
                 </v-col>
               </v-row>
             </v-fade-transition>
           </v-col>
         </v-row>
+         <div >
+        <status :bot="bot" :button="!bot.bot_enabled ? 0 : bot.bot_status == 'isLogged' ? 1 : bot.bot_status == 'chatsAvailable' ? 1 : 2"/>
+         </div>
+
         <v-layout justify-end>
           <v-switch
             @click.stop=""
             color="blue"
             v-model="bot.bot_enabled"
-            @change="setBotStatus(bot.bot_name, bot.bot_enabled)"
+            @change="setBotStatus(bot)"
           >
             <template v-slot:label>
               {{ bot.bot_enabled ? "Ativo" : "Inativo" }}
             </template>
           </v-switch>
         </v-layout>
+
+
+
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         {{ bot.bot_description }}
@@ -55,6 +63,7 @@
 <script>
 import Editbot from "./edit-bot";
 import axios from "axios";
+import status from "../../components/status"
 
 export default {
   props: {
@@ -62,6 +71,7 @@ export default {
   },
   components: {
     Editbot,
+    status
   },
   async created() {
     await this.getBots();
@@ -76,8 +86,11 @@ export default {
     };
   },
   methods: {
-    async setBotStatus(bot_name, bot_enabled) {
-      await axios.patch(`bots/${bot_name}`, { bot_name, bot_enabled });
+    async setBotStatus(bot) {
+
+      await axios.patch(`bots/${bot.bot_name}`, { bot_name: bot.bot_name, bot_enabled: bot.bot_enabled });
+      if (!bot.bot_enabled)
+        axios.post(`logout/${bot.bot_bot}`)
     },    
     async getBots() {
       let res = await axios.get("/bots", {
