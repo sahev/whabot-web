@@ -3,39 +3,57 @@
     <v-expansion-panel
       v-for="(bot, b) in bots"
       :key="b"
-      :class="bot.bot_enabled ? 'enabled' : 'disabled'"
+      :class="!bot.bot_enabled ? 'inactive' : bot.bot_status == 'IsLogged' ? 'enabled' : bot.bot_status == 'chatsAvailable' ? 'enabled' : 'disabled'"
     >
-      <v-row>
-        <v-expansion-panel-header>
-          <b> {{ bot.bot_name }}</b>
-          <v-layout justify-end>
-            <v-switch
-              @click.stop=""
-              color="blue"
-              v-model="bot.bot_enabled"
-              @change="setBotStatus(bot.bot_name, bot.bot_enabled)"
-            >
-              <template v-slot:label>
-                {{ bot.bot_enabled ? "Ativo" : "Inativo" }}
-              </template>
-            </v-switch>
-          </v-layout>
-        </v-expansion-panel-header>
-      </v-row>
-
+      <v-expansion-panel-header v-slot="{ open }" @click="img = false" >
+        <v-row no-gutters>
+          <v-col cols="8">
+            <b> {{ bot.bot_name }}</b>
+          </v-col>
+          <v-col cols="8" class="text--secondary">
+            <v-fade-transition leave-absolute>
+              <span v-if="open && bot.bot_status != 'IsLogged' && bot.bot_status != 'chatsAvailable' ">{{ bot.bot_enabled ? '' : 'Robô desativado'}}
+                <v-btn small @click="botInit(bot)" @click.stop="">Iniciar sessão</v-btn>
+                <v-img v-if="bot.bot_enabled && bot.bot_status != 'online' && img" class="qrcode" :src="qrcode"> </v-img>
+              </span>
+              
+              <v-row v-else no-gutters style="width: 100%">
+                <v-col cols="6">
+                  <span>{{ !bot.bot_enabled ? 'Desativado' : bot.bot_status == "IsLogged" ? "Conectado" : bot.bot_status == "chatsAvailable" ? "Conectado" : "Desconectado"}}</span>
+                </v-col>
+              </v-row>
+            </v-fade-transition>
+          </v-col>
+        </v-row>
+        <v-layout justify-end>
+          <v-switch
+            @click.stop=""
+            color="blue"
+            v-model="bot.bot_enabled"
+            @change="setBotStatus(bot.bot_name, bot.bot_enabled)"
+          >
+            <template v-slot:label>
+              {{ bot.bot_enabled ? "Ativo" : "Inativo" }}
+            </template>
+          </v-switch>
+        </v-layout>
+      </v-expansion-panel-header>
       <v-expansion-panel-content>
         {{ bot.bot_description }}
       </v-expansion-panel-content>
 
-      <v-expansion-panel-content>
-        <configs :botid="bot.bot_id" />
-      </v-expansion-panel-content>
+      <v-layout justify-end>
+        <v-expansion-panel-content>
+          <Editbot />
+        </v-expansion-panel-content>
+      </v-layout>
+
     </v-expansion-panel>
   </v-expansion-panels>
 </template>
 
 <script>
-import configs from "../../components/configs";
+import Editbot from "./edit-bot";
 import axios from "axios";
 
 export default {
@@ -43,28 +61,57 @@ export default {
     msg: String,
   },
   components: {
-    configs,
+    Editbot,
   },
   async created() {
     await this.getBots();
+    // await this.botsInit();
   },
   data() {
     return {
       config: false,
       bots: [],
+      qrcode: null,
+      img: false
     };
   },
   methods: {
     async setBotStatus(bot_name, bot_enabled) {
       await axios.patch(`bots/${bot_name}`, { bot_name, bot_enabled });
-    },
+    },    
     async getBots() {
       let res = await axios.get("/bots", {
         params: { bot_user: 1 },
       });
-
+      
       this.bots = res.data;
+
     },
+    getQrCode(data) {
+      var buffer = new Buffer.from(data);
+      var str = buffer.toString();
+      if (data) 
+        this.qrcode = str
+      else 
+        this.qrcode = null
+      console.log(this.qrcode);
+      return this.qrcode
+    },
+    async botInit(data) {
+      let res = await axios.post('start', { botId: data.bot_bot })
+      
+      if (res)
+        this.getQrCode(data.bot_qrcode.data)
+        this.img = true
+      return
+      // this.bots.map(async bot => {
+      //   if(bot.bot_enabled && bot.bot_status !== 'isLogged') 
+      //     // await this.setBotStatus(bot.bot_bot)
+      //     await axios.post('start', { botId: bot.bot_bot })
+      //     // this.getQrCode(bot.bot_qrcode.data)
+      //   })
+    }
+
   },
 };
 </script>
@@ -79,6 +126,18 @@ export default {
   border-left-style: solid;
   border-left-width: 7px;
   border-left-color: #e41818;
+}
+
+.inactive {
+  border-left-style: solid;
+  border-left-width: 7px;
+  border-left-color: #818181;
+}
+
+.qrcode {
+  margin-top: 6px;
+  height: 20ch;
+  width: 20ch;
 }
 
 .v-expansion-panel-header:before {
