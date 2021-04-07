@@ -16,3 +16,5 @@ new Vue({
   render: h => h(App),
   router
 }).$mount('#app')
+
+localStorage.setItem('user', '1')

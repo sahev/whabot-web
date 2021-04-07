@@ -109,7 +109,7 @@ export default {
     async save() {
       this.dialog = false;
       this.dataBot.bot_type = this.type;
-      this.dataBot.bot_user = "1";
+      this.dataBot.bot_user = localStorage.getItem('user');
 
       await axios.post('bots/', this.dataBot).then(res => console.log("res api: ", res.data))
     },

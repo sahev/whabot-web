@@ -1,62 +1,77 @@
 <template>
 <div>
   <h2>{{ title }}</h2>
-            <v-text-field
-            v-model="text"
-          ></v-text-field>
-  <v-btn v-on:click.once="sendMessage">submit </v-btn>
-  <ul>
-<li v-for="(msg, i) in messages" :key="i">
-  {{ msg }}
-</li>
-  </ul>
+ 
 </div>
 </template>
 <script>
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
+// import axios from 'axios'
 
 export default {
   created() {
+//     var sockett = require('socket.io-client')('http://localhost:3000');
+
+//     console.log(sockett);
+// sockett.on('onCreatedChats:string', function(){
+//   console.log('connected');
+//   console.log(sockett);
+// })
+
+    // this.getMessages();
+    
     // this.socket = io.connect('http://localhost:3000')
+
     // console.log(this.socket);
-    // this.socket.on('msgToClientt', msg => {
+
+    //   this.socket.on('connect_error', res => console.log('connect ', res))
+
+
+    // this.socket.on(`onCreatedChats:1`, msg => {
+    //   console.log('listener ', msg);
     //   this.receiveMessage(msg)
     // })
+    // .on('connect_error', err => console.log('connect err ', err.response))
+    
+
   },
   methods: {
-    // async getVehicles() {
-    //       // const socket = io.connect('http://localhost:3000/');
-    //       const socket = io('http://localhost:3000/connection');
 
-    //       socket.emit('teste', 'mensagem de teste')
-    //       // socket
-    //       //   .on('asdas', (res) => {
-    //       //     // eslint-disable-next-line no-param-reassign
-    //       //     console.log('res', res);
-    //       //     // state.recents.in.push(res[res.length - 1]);
-    //       //     // console.log('open', res, res[res.length - 1]);
-    //       //   })
+        // async sendMessage() {
+          
+        //   const res = await axios.post('chats', {
+        //       cha_stage: this.text1,
+        //       cha_cart: this.text2, 
+        //       cha_user: this.text3, 
+        //   })
 
-    //     },
-        sendMessage() {
-          console.log('send message ', this.text);
-          const socket = io.connect('http://localhost:3000/chats')
-          socket.emit('msgToServer', this.text)
-          socket.emit('events', { name: 'Nest' }, data => console.log(data));
+        // console.log('criado ', res.data);
 
-          this.text = ''
-        },
-        receiveMessage(msg) {
-          console.log('receive msg ', msg);
-          this.messages.push(msg)
-        }
+        // },
+        // receiveMessage(msg) {
+        //   console.log('receive msg ', msg);
+        //   this.messages.push(msg)
+        // },
+        // async getMessages() {
+        //   await axios.get('chats/1').then(res => {
+
+        //     this.messages = res.data
+        //   })
+        // }
+        
   },
+  
   data() {
     return {
+      text1: '',
+      text2: '',
+      text3: '',
+      data: {},
+      items: [],
       socket: null,
       text: '',
       title: "Homepage",
-      messages: ['teste']
+      messages: []
     }
   }
 }
