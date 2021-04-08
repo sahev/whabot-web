@@ -115,7 +115,7 @@ export default {
     this.socket.on("connect_error", (res) => console.log("connect ", res));
 
     this.socket
-      .on(`onCreatedBots:${localStorage.getItem('user')}`, (msg) => {
+      .on(`onCreatedBots:${localStorage.getItem("user")}`, (msg) => {
         console.log("receive created ", msg);
         this.receiveCreatedMessage(msg);
       })
@@ -126,7 +126,6 @@ export default {
         this.receiveUpdatedMessage(msg);
       })
       .on("connect_error", (err) => console.log("connect err ", err.response));
-
   },
   data() {
     return {
@@ -143,11 +142,19 @@ export default {
         bot_name: bot.bot_name,
         bot_enabled: bot.bot_enabled,
       });
-      if (!bot.bot_enabled) axios.post(`logout/${bot.bot_bot}`);
+
+      if (!bot.bot_enabled) {
+        axios.post(`logout/${bot.bot_bot}`);
+        this.socket
+          .emit("onUpdatedBots", bot)
+          .on("connect_error", (err) =>
+            console.log("connect err ", err.response)
+          );
+      }
     },
     async getBots() {
       let res = await axios.get("/bots", {
-        params: { bot_user: localStorage.getItem('user') },
+        params: { bot_user: localStorage.getItem("user") },
       });
 
       this.bots = res.data;
@@ -166,25 +173,24 @@ export default {
       if (res) this.getQrCode(data.bot_qrcode.data);
       this.img = true;
       return;
-      // this.bots.map(async bot => {
-      //   if(bot.bot_enabled && bot.bot_status !== 'isLogged')
-      //     // await this.setBotStatus(bot.bot_bot)
-      //     await axios.post('start', { botId: bot.bot_bot })
-      //     // this.getQrCode(bot.bot_qrcode.data)
-      //   })
     },
 
     receiveCreatedMessage(msg) {
       // console.log("receive msg ", msg);
       this.bots.push(msg);
-      console.log('this.bots ', this.bots);
+      console.log("this.bots ", this.bots);
     },
 
     receiveUpdatedMessage(msg) {
       console.log("receive update msg ", msg);
 
+      this.bots.filter((bot) => {
+        if (bot.bot_bot === msg.bot_bot) {
+          bot.bot_status = msg.bot_status;
+        }
+      });
       // this.bots.push(msg);
-    },    
+    },
   },
 };
 </script>
