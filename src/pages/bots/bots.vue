@@ -27,9 +27,6 @@
                     bot.bot_status != 'chatsAvailable'
                 "
                 >{{ bot.bot_enabled ? "" : "Robô desativado" }}
-
-                <!-- <v-btn small @click="botInit(bot)" @click.stop="">Iniciar sessão</v-btn>
-                <v-img v-if="bot.bot_enabled && bot.bot_status != 'online' && img" class="qrcode" :src="qrcode"> </v-img> -->
               </span>
 
               <v-row v-else no-gutters style="width: 100%">
@@ -176,7 +173,6 @@ export default {
     },
 
     receiveCreatedMessage(msg) {
-      // console.log("receive msg ", msg);
       this.bots.push(msg);
       console.log("this.bots ", this.bots);
     },
@@ -189,7 +185,6 @@ export default {
           bot.bot_status = msg.bot_status;
         }
       });
-      // this.bots.push(msg);
     },
   },
 };
