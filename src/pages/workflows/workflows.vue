@@ -1,116 +1,102 @@
 <template>
-  <div class="row">
-    <div class="col-4" v-for="(stage, i) in stages" :key="i">
-      <h3>{{ stage.sta_name }}</h3>
+<v-container>
+  <v-list three-line>
+    <template v-for="(wk, i) in workflows">
+      <v-divider
+        v-if="wk.divider"
+        :key="i"
+        :inset="wk.inset"
+      ></v-divider>
+
+      <v-list-item v-else :key="i" link :to="{ path: 'stages', query: { wor: wk.wor_workflow } }">
+        <v-list-item-avatar>
+          <v-avatar :key="i" :color="randomColor()">
+            <span class="white--text ">{{getInitials(wk.wor_name)}}</span>
+          </v-avatar>
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title v-html="wk.wor_name"></v-list-item-title>
+          <v-list-item-subtitle v-html="wk.wor_bot"></v-list-item-subtitle>
+        </v-list-item-content>
 
 
-        <div
-          class="list-group-item item"
-          v-for="(element, i) in filterWordKeys(stage.sta_stage)"
-          :key="i"
-        >
-          {{ element.wok_word }}
-        </div>
+    <v-chip small v-for="(bot, b) in filterBots(wk.wor_workflow)" :key="b" >
+            <v-icon left>
+        mdi-label
+      </v-icon>
+      {{ bot.bot_name }}
+    </v-chip>
+      </v-list-item>
+    </template>
 
-        <div
-          slot="header"
-          class="btn-group list-group-item"
-          role="group"
-          aria-label="Basic example"
-        ></div>
-        <v-btn class="btn btn-secondary">Add</v-btn>
-        <v-btn class="btn btn-secondary">Replace</v-btn>
-    </div>
-
-    <!--<div class="col-4">
-      <h3>estágio 2</h3>
-
-       <draggable
-        :list="estagio2"
-        class="list-group"
-        draggable=".item"
-        group="a"
-      >
-        <div
-          class="list-group-item item"
-          v-for="(element, i) in estagio2"
-          :key="i"
-        >
-          {{ element.word }}
-        </div>
-
-        <div
-          slot="header"
-          class="btn-group list-group-item"
-          role="group"
-          aria-label="Basic example"
-        ></div>
-        <v-btn class="btn btn-secondary">Add</v-btn>
-        <v-btn class="btn btn-secondary">Replace</v-btn>
-      </draggable> 
-    </div>-->
-  </div>
+  </v-list>
+</v-container>
 </template>
 
 <script>
-// import draggable from "vuedraggable";
-import axios from 'axios'
+import axios from "axios"
 
+// import draggable from "vuedraggable";
 export default {
-  name: "two-list-headerslots",
-  display: "Two list header slot",
-  order: 14,
   components: {
-    // draggable,
   },
-  watch: {
-    estagio1: {
-      handler: function(val) {
-        console.log("list 1", val);
-      },
-      deep: true,
-    },
-    estagio2: {
-      handler: function(val) {
-        console.log("list 2", val);
-      },
-      deep: true,
-    },
-  },
+  data: () => ({
+    showStage: false,
+    colors: ["red", "blue", "green", "cyan", "black", "brown"],
+    workflows: [],
+    bots: []
+  }),
   created() {
-    this.getStages();
-    this.getWordKeys();
-  },
-  data() {
-    return {
-      stages: Array,
-      wordkeys: Array
-    };
+    this.getWorkflows();
+    this.getBots();
   },
   methods: {
-    filterWordKeys(stage) {
-      let wk = [];
+    redirect() {
+      // router.push({ path: 'register', query: { plan: 'private' }})
+    },
+    filterBots(workflow) {
+      let data = [];
 
-      this.wordkeys.forEach(res => {
-        if(res.wok_stage === stage) {
-          console.log('res' ,res);
-          wk.push(res)
+      this.bots.forEach(res => {
+        if(res.bot_workflow === workflow) {
+          data.push(res)
         }
       });
-      
-      return wk
+      return data
     },
-
-    async getStages() {
-      let r = await axios.get('stages/4')
-      this.stages = r.data
-      
+    async getWorkflows() {
+      let r = await axios.get('workflows')
+      r.data.map(res => {
+        this.workflows.push(res)
+        this.workflows.push({ divider: true, inset: true })
+      })
     },
-    async getWordKeys() {
-      let r = await axios.get(`wordkeys/`)
-      this.wordkeys = r.data
+    async getBots() {
+      let r = await axios.get('workflows/bots')
+      this.bots = r.data
+      console.log('bots ', this.bots);
+    },
+    randomColor() {
+      let r = Math.random() * 255;
+      let g = Math.random() * 255;
+      let b = Math.random() * 255;
       
-    }
+      return `rgba(${r}, ${g}, ${b}, 1)`;
+    },
+    getInitials(fullName) {
+      const allNames = fullName.trim().split(" ");
+      const initials = allNames.reduce(
+        (acc, curr, index) => {
+          if (index === 0 || index === allNames.length - 1) {
+            acc = `${acc}${curr.charAt(0).toUpperCase()}`;
+          }
+          return acc;
+        },
+        [""]
+      );
+      return initials;
+    },
   },
 };
 </script>
