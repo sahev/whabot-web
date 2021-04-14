@@ -107,7 +107,7 @@ export default {
 
     this.socket = io.connect("http://localhost:3000");
 
-    console.log(this.socket);
+    // console.log(this.socket);
 
     this.socket.on("connect_error", (res) => console.log("connect ", res));
 
@@ -174,11 +174,11 @@ export default {
 
     receiveCreatedMessage(msg) {
       this.bots.push(msg);
-      console.log("this.bots ", this.bots);
+      // console.log("this.bots ", this.bots);
     },
 
     receiveUpdatedMessage(msg) {
-      console.log("receive update msg ", msg);
+      // console.log("receive update msg ", msg);
 
       this.bots.filter((bot) => {
         if (bot.bot_bot === msg.bot_bot) {

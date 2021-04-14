@@ -45,9 +45,9 @@
 
               <v-col cols="12" sm="6">
                 <v-select
-                  :items="models"
+                  :items="dataModels"
                   label="Modelo de respostas*"
-                  v-model="dataBot.bot_model"
+                  v-model="models"
                   :disabled="disableDropdown"
                   required
                 ></v-select>
@@ -83,34 +83,35 @@ export default {
       dialog: false,
       disableDropdown: true,
       dataType: ["FAQ", "WORKFLOW"],
-      dataModels: [
-        { id: 1, name: "MODEL FAQ 1", type: "FAQ" },
-        { id: 2, name: "MODEL FAQ 2", type: "FAQ" },
-        { id: 3, name: "MODEL FAQ 3", type: "FAQ" },
-        { id: 1, name: "MODEL Workflow 1", type: "WORKFLOW" },
-        { id: 2, name: "MODEL Workflow 2", type: "WORKFLOW" },
-      ],
+      dataModels: [],
       type: [],
+      workflow: [],
       models: [],
       dataBot: {},
     };
   },
   methods: {
-    getModels() {
+    async getModels() {
       this.disableDropdown = false;
-      const modelsdata = this.dataModels.filter(
-        (data) => data.type === this.type
-      );
-
-      if (this.models) this.models = [];
-
-      modelsdata.map((model) => this.models.push(model.name));
+      if (this.dataModels) this.dataModels = [];
+      if (this.type === "WORKFLOW") {
+        let wk = await axios.get('workflows')
+        wk.data.map(res => {
+          this.dataModels.push(res.wor_name)
+          this.workflow.push(res)
+        })
+      }
     },
     async save() {
       this.dialog = false;
-      this.dataBot.bot_type = this.type;
       this.dataBot.bot_user = localStorage.getItem('user');
 
+      this.workflow.map(res => { 
+        console.log('res',res, this.models);
+        if (res.wor_name === this.models) {
+          this.dataBot.bot_workflow = res.wor_workflow;
+        }
+      })
       await axios.post('bots/', this.dataBot).then(res => console.log("res api: ", res.data))
     },
   },
