@@ -52,9 +52,6 @@ export default {
     this.getBots();
   },
   methods: {
-    redirect() {
-      // router.push({ path: 'register', query: { plan: 'private' }})
-    },
     filterBots(workflow) {
       let data = [];
 
