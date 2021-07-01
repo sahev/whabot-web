@@ -105,7 +105,8 @@ export default {
 
     // await this.botsInit();
 
-    this.socket = io.connect("http://localhost:3000");
+    // this.socket = io.connect("http://localhost:3000/");
+    this.socket = io.connect("https://samuelevangelista.tk:3001");
 
     // console.log(this.socket);
 

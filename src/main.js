@@ -9,7 +9,7 @@ Vue.use(Vuetify)
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = "http://localhost:3000"
+axios.defaults.baseURL = "https://samuelevangelista.tk:3001/"
 
 new Vue({
   vuetify: new Vuetify({}),
