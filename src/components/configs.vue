@@ -7,7 +7,7 @@
       transition="dialog-bottom-transition"
     >
       <template v-slot:activator="{ on, attrs }">
-        <div class="col-lg-12" style="text-align: right;">
+        <div style="text-align: right;">
           <v-btn fab dark small color="blue"  >
             <v-icon v-bind="attrs" v-on="on" @click="log(attrs)">mdi-pencil</v-icon>
           </v-btn>

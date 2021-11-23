@@ -13,12 +13,9 @@
         
         <Menu :drawer="drawer"/>
 
-        <v-col sm="12"></v-col>
 
         <v-main class="grey lighten-4 ">
           <v-card class="mx-auto" max-width="900" outlined>
-
-            <v-col sm="12"></v-col>
 
             <v-col sm="12">
               <v-container fluid>

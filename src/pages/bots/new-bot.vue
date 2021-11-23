@@ -95,11 +95,14 @@ export default {
       this.disableDropdown = false;
       if (this.dataModels) this.dataModels = [];
       if (this.type === "WORKFLOW") {
+        this.dataBot.bot_type = 1;
         let wk = await axios.get('workflows')
         wk.data.map(res => {
           this.dataModels.push(res.wor_name)
           this.workflow.push(res)
         })
+      } else {
+        this.dataBot.bot_type = 2;
       }
     },
     async save() {
@@ -112,6 +115,7 @@ export default {
           this.dataBot.bot_workflow = res.wor_workflow;
         }
       })
+      console.log( 'resp api: ',this.dataBot);
       await axios.post('bots/', this.dataBot).then(res => console.log("res api: ", res.data))
     },
   },

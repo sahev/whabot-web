@@ -13,7 +13,6 @@
         <Menu :drawer="drawer"/>
 
         <v-main class="grey lighten-4 ">
-          <v-col sm="12"></v-col>
 
           <v-col sm="12">
             <v-container fluid>
