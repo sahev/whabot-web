@@ -52,8 +52,8 @@ export default {
     },
   },
   mounted() {
-    this.getStagesByWorkflow(this.workflow);
-    this.getWordKeys();
+    // this.getStagesByWorkflow(this.workflow);
+    // this.getWordKeys();
   },
   created() {
     this.workflow = this.$route.query.wor;

@@ -1,0 +1,26 @@
+diff --git a/node_modules/vue-simple-flowchart/src/components/FlowchartNode.vue b/node_modules/vue-simple-flowchart/src/components/FlowchartNode.vue
+index c845d52..0e5e49e 100644
+--- a/node_modules/vue-simple-flowchart/src/components/FlowchartNode.vue
++++ b/node_modules/vue-simple-flowchart/src/components/FlowchartNode.vue
+@@ -5,7 +5,7 @@
+     @mouseleave="handleMouseLeave"
+     v-bind:class="{selected: options.selected === id}">
+     <div class="node-port node-input"
+-       @mousedown="inputMouseDown"
++       @mouseup="inputMouseDown"
+        @mouseup="inputMouseUp">
+     </div>
+     <div class="node-main">
+diff --git a/node_modules/vue-simple-flowchart/src/components/SimpleFlowchart.vue b/node_modules/vue-simple-flowchart/src/components/SimpleFlowchart.vue
+index a8c0eee..bf4a02e 100644
+--- a/node_modules/vue-simple-flowchart/src/components/SimpleFlowchart.vue
++++ b/node_modules/vue-simple-flowchart/src/components/SimpleFlowchart.vue
+@@ -2,7 +2,7 @@
+   <div class="flowchart-container" 
+     @mousemove="handleMove" 
+     @mouseup="handleUp"
+-    @mousedown="handleDown">
++    @mouseup="handleDown">
+     <svg width="100%" :height="`${height}px`">
+       <flowchart-link v-bind.sync="link" 
+         v-for="(link, index) in lines" 

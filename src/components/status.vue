@@ -102,7 +102,7 @@ export default {
         this.islogged = true;
 
         let res = await axios.get(`botstatus/${this.bot.bot_bot}`);
-
+console.log(res, 'statis');
         if (res.data) {
           this.status = true;
           this.islogged = this.scanning = this.getting = false;
