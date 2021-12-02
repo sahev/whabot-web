@@ -12,6 +12,7 @@
     "@mdi/font": "^5.8.55",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "flowchart-vue": "^0.19.2",
     "patch-package": "^6.4.7",
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.11",

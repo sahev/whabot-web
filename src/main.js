@@ -4,8 +4,10 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import axios from 'axios'
 import router from './router'
+import FlowChart from 'flowchart-vue';
 
 Vue.use(Vuetify)
+Vue.use(FlowChart);
 
 Vue.config.productionTip = false
 

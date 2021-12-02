@@ -5,6 +5,7 @@ import Botspage from '../pages/bots/botspage.vue'
 import Faqspage from '../pages/faqs/faqspage.vue'
 import Workflowspage from '../pages/workflows/workflowspage.vue'
 import Stagespage from '../pages/stages/stagespage.vue'
+import Stagespage2 from '../pages/stages/stagespage2.vue'
 import Configspage from '../pages/configurations/configspage.vue'
 import Helppage from '../pages/help/helppage.vue'
 
@@ -52,6 +53,15 @@ const router = new Router({
       //   requiresAuth: true
       // }
     },    
+    
+    {
+      path: '/stages2/',
+      name: 'stages2',
+      component: Stagespage2,
+      // meta: {
+      //   requiresAuth: true
+      // }
+    },   
     {
       path: '/configs',
       name: 'configs',

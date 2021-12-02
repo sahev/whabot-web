@@ -126,7 +126,9 @@ export default {
       console.log(e);
     },
     async getLinks() {
-      let res = await axios.get('link/all');
+      let res = await axios.get(`/link/${this.$route.query.wor}`);
+      // let res = await axios.get(`/link`);
+      console.log(res, 'links');
       res.data.map(r=>{
         this.scene.links.push(r)
       })
@@ -140,10 +142,10 @@ export default {
     },
     async linkAdded(link) {
       console.log("new link added:", link);
-      let res = await axios.post('link',
+      await axios.post('link',
         link
       )
-      console.log(res);
+      this.saveNode();
     },
     saveNode() {
       this.scene.nodes.map((node) => {
@@ -183,7 +185,7 @@ export default {
       });
     },
     async getNodes() {
-      let res = await axios.get("/stages");
+      let res = await axios.get(`/stages/${this.$route.query.wor}`);
       res.data.map((r) => this.scene.nodes.push(r));
     },
     nodeClick(id) {
