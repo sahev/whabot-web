@@ -25,7 +25,7 @@
                   y: 10,
                   name: 'New',
                   type: 'operation',
-                  approvers: [],
+                  approvers: [{ id: 2, name: 'Allen' }],
                 })
               "
             >
@@ -48,6 +48,16 @@
               ref="chart"
             >
             </flowchart>
+            <node-dialog
+              :visible.sync="nodeDialogVisible"
+              :node.sync="nodeForm.target"
+            ></node-dialog>
+            <connection-dialog
+              :visible.sync="connectionDialogVisible"
+              :connection.sync="connectionForm.target"
+              :operation="connectionForm.operation"
+            >
+            </connection-dialog>
             <v-btn @click="addspace()">addspaceempty</v-btn>
             <v-btn @click="zoomout()">zoom out</v-btn>
           </div>
@@ -59,19 +69,20 @@
 
 <script>
 import Menu from "../../components/menu";
-// import ConnectionDialog from "./components/connectiondialog";
-// import NodeDialog from "./components/nodedialog";
+import ConnectionDialog from "./components/connectiondialog";
+import NodeDialog from "./components/nodedialog";
+import axios from "axios";
 
 export default {
   components: {
     Menu,
-    // ConnectionDialog,
-    // NodeDialog,
+    ConnectionDialog,
+    NodeDialog,
   },
   props: {},
   data() {
     return {
-        space: 600,
+      space: 600,
       drawer: true,
       title: "stages2",
       nodes: [
@@ -93,9 +104,9 @@ export default {
           y: 140,
           width: 120,
           height: 70,
-          name: "novo",
+          name: "atendente",
           type: "ope",
-          description: "descricao",
+          approvers: [{ id: 1, name: "opção 1" }],
         },
         {
           id: 3,
@@ -109,40 +120,42 @@ export default {
         },
       ],
       connections: [
-        {
-          source: { id: 1, position: "top" },
-          destination: { id: 2, position: "left" },
-          id: 1,
-          type: "pass", //pass or reject
-        },
-        {
-          source: { id: 2, position: "right" },
-          destination: { id: 3, position: "top" },
-          id: 2,
-          type: "pass", //pass, reject or any (gray color)
-        },
-        {
-          source: { id: 2, position: "bottom" },
-          destination: { id: 1, position: "right" },
-          description: "teste",
-          id: 3,
-          type: "reject", //pass, reject or any (gray color)
-        },
+        // {
+        //   source: { id: 1, position: "top" },
+        //   destination: { id: 2, position: "left" },
+        //   id: 1,
+        //   type: "pass", //pass or reject
+        // },
+        // {
+        //   source: { id: 2, position: "right" },
+        //   destination: { id: 3, position: "top" },
+        //   id: 2,
+        //   type: "pass", //pass, reject or any (gray color)
+        // },
+        // {
+        //   source: { id: 2, position: "bottom" },
+        //   destination: { id: 1, position: "right" },
+        //   description: "teste",
+        //   id: 3,
+        //   type: "reject", //pass, reject or any (gray color)
+        // },
       ],
       nodeForm: { target: null },
       connectionForm: { target: null, operation: null },
       nodeDialogVisible: false,
-      connectionDialogVisible: false
+      connectionDialogVisible: false,
     };
-
   },
-  mounted() {},
+  created() {
+    this.getAllConnections();
+  },
   methods: {
     addspace() {
-      this.space += 300
+      this.space += 400;
     },
-    zoomout() {
-        
+    zoomout() {},
+    async getAllConnections() {
+      await axios.get(`link/${this.$route.query.wor}`).then(res=>  this.connections = res.data );
     },
     handleChartSave(nodes, connections) {
       // axios.post(url, {nodes, connections}).then(resp => {
@@ -150,6 +163,8 @@ export default {
       //   this.connections = resp.data.connections;
       //   // Flowchart will refresh after this.nodes and this.connections changed
       // });
+
+      axios.post(`/link/${this.$route.query.wor}`, connections);
       console.log(nodes, "nodes");
       console.log(connections, "connections");
     },

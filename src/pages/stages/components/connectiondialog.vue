@@ -1,27 +1,49 @@
 <template>
-    <div>
-        <div class="modal" v-if="visible" style="width: 320px">
-            <div class="header">
-                <span>Edit</span>
-            </div>
-            <div class="body">
-                <label for="name">Name</label>
-                <input id="name" class="form-control" v-model="connectionForm.name"/>
-                <label for="type">Type</label>
-                <select id="type" class="form-control" v-model="connectionForm.type">
-                    <option :key="'connection-type-' + item.id"
-                            v-for="item in [ { name: 'Pass', id: 'pass' }, { name: 'Reject', id: 'reject' } ]"
-                            :value="item.id">
-                        {{item.name}}
-                    </option>
-                </select>
-            </div>
-            <div class="footer">
-                <button @click="handleClickCancelSaveConnection">Cancel</button>
-                <button @click="handleClickSaveConnection">Ok</button>
-            </div>
-        </div>
-    </div>
+    <v-dialog v-model="visible" max-width="700px" hide-overlay persistent>
+
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">Editar</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" >
+                <v-text-field v-model="connectionForm.name" label="Name" required></v-text-field>
+              </v-col>
+
+              <v-col cols="12">
+                <v-select
+                    v-model="connectionForm.type"
+                    :items="types"
+                  label="Type"
+                  required
+                >
+                
+                </v-select>
+
+              </v-col>
+
+              <v-col cols="12">
+                <v-text-field label="Palavras-chave" required></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-textarea label="Auto-resposta" required></v-textarea>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="handleClickCancelSaveConnection">
+            Close
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="handleClickSaveConnection">
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 </template>
 <script>
   export default {
@@ -37,6 +59,7 @@
     },
     data() {
       return {
+        types: ['pass', 'reject'],
         connectionForm: {
           type: null,
           sourceId: null,
